@@ -1,4 +1,4 @@
-package main
+package pack
 
 type Kp2MspAlgo struct {
 }

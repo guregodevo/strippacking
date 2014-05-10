@@ -1,8 +1,8 @@
-package main
+package pack
 
 import (
-	"cmath"
-	"container/vector"
+	"math"
+	"container/list"
 	"container/heap"
 )
 
@@ -35,18 +35,18 @@ func (v *HeapElem) Less(x interface{}) bool {
 // Ignores 'm' parameter since it is single strip packing algorithm.
 type Kp1Algo struct {
 	frame    Bin
-	bins     map[int]*vector.Vector
+	bins     map[int]*list.List
 	delta, u float64
 	d        int
 }
 
 func (v *Kp1Algo) Init(n int) {
-	v.delta = real(cmath.Pow(complex(float64(n), 0), (-1.0 / 3)))
-	v.u = real(cmath.Pow(complex(float64(n), 0), (1.0 / 3)))
+	v.delta = real(math.Pow(complex(float64(n), 0), (-1.0 / 3)))
+	v.u = real(math.Pow(complex(float64(n), 0), (1.0 / 3)))
 	v.d = int(1 / (2 * v.delta))
-	v.bins = make(map[int]*vector.Vector)
+	v.bins = make(map[int]*list.List)
 	for y := 0; y <= 2*v.d+1; y++ {
-		vec := make(vector.Vector, 0)
+		vec := make(list.List, 0)
 		v.bins[y] = &vec
 	}
 }

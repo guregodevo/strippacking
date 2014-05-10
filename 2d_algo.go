@@ -1,7 +1,7 @@
-package main
+package pack
 
 import (
-	"cmath"
+	"math"
 )
 
 type TdAlgo struct {
@@ -18,7 +18,7 @@ func (v *TdAlgo) Pack(rects []Rect, xbe, ybe float64, m int) float64 {
 	v.frame.w = 1
 	v.nrects = 0
 	n := len(rects)
-	v.delta = real(cmath.Pow(complex(float64(n), 0), (-1.0 / 2)))
+	v.delta = real(math.Pow(complex(float64(n), 0), (-1.0 / 2)))
 	v.rects = make([]Rect, n)
 	
 	for y := 0; y < n; y++ {

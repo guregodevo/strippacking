@@ -1,8 +1,8 @@
-package main
+package pack
 
 import (
-	"gdk"
-	"gtk"
+	"github.com/mattn/go-gtk/gdk"
+	"github.com/mattn/go-gtk/gtk"
 	"os"
 )
 
