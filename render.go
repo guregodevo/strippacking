@@ -1,4 +1,4 @@
-package pack
+package packing
 
 import (
 	"github.com/mattn/go-gtk/gdk"
