@@ -1,8 +1,5 @@
 package packing
 
-
-package main
-
 import (
 	"math/rand"
 	"time"
