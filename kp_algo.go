@@ -1,8 +1,7 @@
 package packing
 
 import (
-	"math"
-	"container/list"
+	"math/cmplx"
 	"container/heap"
 )
 
@@ -28,6 +27,36 @@ func (v *HeapElem) Less(x interface{}) bool {
 	return v.VacantSpace() > x.(HeapElemLike).VacantSpace()
 }
 
+// An BinHeap is a min-heap of ints.
+type PackingHeap []*HeapElem
+
+func (h PackingHeap) Len() int           { return len(h) }
+func (h PackingHeap) Less(i, j int) bool { return h[i].Less(h[j]) }
+func (h PackingHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *PackingHeap) Push(x interface{}) {
+	// Push and Pop use pointer receivers because they modify the slice's length,
+	// not just its contents.
+	*h = append(*h, x.(*HeapElem))
+}
+
+func (h *PackingHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+
+
+
+
+
+
+
+
+
 // Packs rectangles from slice 'rects' to the strip starting from lower bound 
 // 'be' according to Kuzyurin-Pospelov's basic algorithm. 
 // Returns an upper bound of resulting alignment. This algo in not quite 
@@ -35,18 +64,18 @@ func (v *HeapElem) Less(x interface{}) bool {
 // Ignores 'm' parameter since it is single strip packing algorithm.
 type Kp1Algo struct {
 	frame    Bin
-	bins     map[int]*list.List
+	bins     map[int]*PackingHeap
 	delta, u float64
 	d        int
 }
 
 func (v *Kp1Algo) Init(n int) {
-	v.delta = real(math.Pow(complex(float64(n), 0), (-1.0 / 3)))
-	v.u = real(math.Pow(complex(float64(n), 0), (1.0 / 3)))
+	v.delta = real(cmplx.Pow(complex(float64(n), 0), (-1.0 / 3)))
+	v.u = real(cmplx.Pow(complex(float64(n), 0), (1.0 / 3)))
 	v.d = int(1 / (2 * v.delta))
-	v.bins = make(map[int]*list.List)
+	v.bins = make(map[int]*PackingHeap)
 	for y := 0; y <= 2*v.d+1; y++ {
-		vec := make(list.List, 0)
+		vec := make(PackingHeap, 0)
 		v.bins[y] = &vec
 	}
 }

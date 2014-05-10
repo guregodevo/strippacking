@@ -2,9 +2,8 @@ package packing
 
 import (
 	"math/rand"
-	"time"
 	"fmt"
-	"math"
+	"math/cmplx"
 )
 
 type Rect struct {
@@ -41,7 +40,7 @@ func run(n int, render, validate bool, algo_name string, m int) (coefficient flo
 	var algo Algorithm
 
 	if "kp1" == algo_name {
-		algo = new(pack.Kp1Algo)
+		algo = new(Kp1Algo)
 	} else if "kp2" == algo_name {
 		algo = new(Kp2Algo)
 	} else if "2d" == algo_name {
@@ -59,7 +58,7 @@ func run(n int, render, validate bool, algo_name string, m int) (coefficient flo
 	fmt.Printf("Solution height = %0.9v\nTotal area = %0.9v\n", H, total_area)
 	uncovered_area := H * float64(m) - total_area
 	fmt.Printf("Uncovered area = %0.9v\n", uncovered_area)
-	coefficient = uncovered_area / real(math.Pow(complex(float64(n), 0), (2.0/3)))
+	coefficient = uncovered_area / real(cmplx.Pow(complex(float64(n), 0), (2.0/3)))
 
 	if true == validate {
 		if false == Validate(rects, m, H) {

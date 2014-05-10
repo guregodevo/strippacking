@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-var draw *gdk.GdkDrawable
-var gc *gdk.GdkGC
-var drawingarea *gtk.GtkDrawingArea
+var draw *gdk.Drawable
+var gc *gdk.GC
+var drawingarea *gtk.DrawingArea
 
 const W = 6
 
@@ -43,32 +43,31 @@ func conv_w(w float64) int {
 
 func render_all(rects []Rect, m int) {
 	gtk.Init(&os.Args)
-	window := gtk.Window(gtk.GTK_WINDOW_TOPLEVEL)
+	window := gtk.NewWindow(gtk.WINDOW_TOPLEVEL)
 	window.SetTitle("GTK DrawingArea")
 	window.Connect("destroy", func() {
 		gtk.MainQuit()
 	},
 		nil)
 
-	vbox := gtk.VBox(true, 0)
+	vbox := gtk.NewVBox(true, 0)
 	vbox.SetBorderWidth(5)
-	drawingarea = gtk.DrawingArea()
+	drawingarea = gtk.NewDrawingArea()
 
-	var pixmap *gdk.GdkPixmap
+	var pixmap *gdk.Pixmap
 
 	drawingarea.Connect("configure-event", func() {
 		if pixmap != nil {
 			pixmap.Unref()
 		}
-		var allocation gtk.GtkAllocation
-		drawingarea.GetAllocation(&allocation)
+		allocation := drawingarea.GetAllocation()
 		draw = drawingarea.GetWindow().GetDrawable()
-		pixmap = gdk.Pixmap(drawingarea.GetWindow().GetDrawable(), allocation.Width, allocation.Height, 24)
-		gc = gdk.GC(pixmap.GetDrawable())
-		gc.SetRgbFgColor(gdk.Color("white"))
+		pixmap = gdk.NewPixmap(drawingarea.GetWindow().GetDrawable(), allocation.Width, allocation.Height, 24)
+		gc = gdk.NewGC(pixmap.GetDrawable())
+		gc.SetRgbFgColor(gdk.NewColor("white"))
 		pixmap.GetDrawable().DrawRectangle(gc, true, 0, 0, -1, -1)
-		gc.SetRgbFgColor(gdk.Color("black"))
-		gc.SetRgbBgColor(gdk.Color("white"))
+		gc.SetRgbFgColor(gdk.NewColor("black"))
+		gc.SetRgbBgColor(gdk.NewColor("white"))
 	},
 		nil)
 
@@ -109,12 +108,12 @@ func draw_all(rects []Rect, m int) {
 		r.Draw(!*pnonsolid)
 	}
 	if *prenderbins {
-		gc.SetRgbFgColor(gdk.Color("red"))
+		gc.SetRgbFgColor(gdk.NewColor("red"))
 		for _, r := range bins_to_render {
 			r.w *= strip_width
 			r.x *= strip_width
 			r.Draw(false)
 		}
-		gc.SetRgbFgColor(gdk.Color("black"))
+		gc.SetRgbFgColor(gdk.NewColor("black"))
 	}
 }
