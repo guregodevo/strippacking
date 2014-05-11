@@ -28,7 +28,7 @@ func (v *Kp2MspBalancedAlgo) Pack(rects []Rect, xbe, ybe float64, m int) float64
 		v.RecalcFrames(rects[:s], m)
 		// Dirty hack to make it possible to render bins, initial interface does
 		// not have corresponding mechanism.
-		if *prenderbins {
+		if *Prenderbins {
 			if nil == bins_to_render {
 				bins_to_render = make([]*Rect, 0)
 			}
@@ -46,8 +46,8 @@ func (v *Kp2MspBalancedAlgo) Pack(rects []Rect, xbe, ybe float64, m int) float64
 	ans := float64(0)
 	n := len(rects)
 	for y := 0; y < n; y++ {
-		if ans < rects[y].y + rects[y].h {
-			ans = rects[y].y + rects[y].h
+		if ans < rects[y].Y + rects[y].H {
+			ans = rects[y].Y + rects[y].H
 		}
 	}
 	return ans
@@ -67,7 +67,7 @@ func (v *Kp2MspBalancedAlgo) PackWithSize(rects []Rect, xbe, ybe float64, m int)
 		}
 		
 		r := &rects[i]
-		if r.w > (1 - v.delta) {
+		if r.W > (1 - v.delta) {
 			PackToBin(&v.frames[lowest], r)
 			continue
 		}
@@ -89,8 +89,8 @@ func (v *Kp2MspBalancedAlgo) RecalcFrames(rects []Rect, m int) {
 	}
 	for y := 0; y < len(rects); y++ {
 		r := &rects[y]
-		t := int(r.x + 0.5*r.w)
-		cur := r.y + r.h - v.frames[t].y
+		t := int(r.X + 0.5*r.W)
+		cur := r.Y + r.H - v.frames[t].Y
 		if cur > v.frames[t].top {
 			v.frames[t].top = cur
 		}
@@ -101,8 +101,8 @@ func (v *Kp2MspBalancedAlgo) InitFrames(xbe, ybe float64, m int) {
 	v.frames = make([]Bin, m)
 	for y := 0; y < m; y++ {
 		v.frames[y].top = 0
-		v.frames[y].w = 1
-		v.frames[y].x = xbe + float64(y)
-		v.frames[y].y = ybe
+		v.frames[y].W = 1
+		v.frames[y].X = xbe + float64(y)
+		v.frames[y].Y = ybe
 	}
 }

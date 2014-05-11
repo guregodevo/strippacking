@@ -6,7 +6,7 @@ import (
 
 func (v *Rect) PrintInfo() {
 	fmt.Printf("x = %0.9v, w = %0.9v, y = %0.9v, h = %0.9v\n",
-		v.x, v.w, v.y, v.h)
+		v.X, v.W, v.Y, v.H)
 }
 
 // Validates that rectangles are packed into strips correctly. I.e. without 
@@ -35,12 +35,12 @@ func Validate(rects []Rect, m int, H float64) bool {
 }
 
 func rect_inside_strip(r *Rect, m int, H float64) bool {
-	if float64_less(r.x, 0) || float64_less(float64(m), r.x+r.w) || 
-			float64_less(r.y, 0) || float64_less(H, r.y + r.h) {
+	if float64_less(r.X, 0) || float64_less(float64(m), r.X+r.W) || 
+			float64_less(r.Y, 0) || float64_less(H, r.Y + r.H) {
 		return false
 	}
 	for y := 1; y < m; y++ {
-		if float64_less(r.x, float64(y)) && float64_less(float64(y), r.x+r.w) {
+		if float64_less(r.X, float64(y)) && float64_less(float64(y), r.X+r.Y) {
 			return false
 		}
 	}
@@ -50,8 +50,8 @@ func rect_inside_strip(r *Rect, m int, H float64) bool {
 // Returns true in case two rectangles have non-zero common area regards to 
 // float64 comparison function (float64_less). False o/w.
 func rects_overlap(a *Rect, b *Rect) bool {
-	return segments_overlap(&Segment{a.x, a.x + a.w}, &Segment{b.x, b.x + b.w}) &&
-		segments_overlap(&Segment{a.y, a.y + a.h}, &Segment{b.y, b.y + b.h})
+	return segments_overlap(&Segment{a.X, a.X + a.W}, &Segment{b.X, b.X + b.W}) &&
+		segments_overlap(&Segment{a.X, a.Y + a.H}, &Segment{b.Y, b.Y + b.H})
 }
 
 type Segment struct {

@@ -20,7 +20,7 @@ type HeapElem struct {
 }
 
 func (v *HeapElem) VacantSpace() float64 {
-	return v.p.h - v.p.top
+	return v.p.H - v.p.top
 }
 
 func (v *HeapElem) Less(x interface{}) bool {
@@ -82,16 +82,16 @@ func (v *Kp1Algo) Init(n int) {
 
 func (v *Kp1Algo) Pack(rects []Rect, xbe, ybe float64, m int) float64 {
 	v.frame.top = 0
-	v.frame.y = ybe
-	v.frame.x = xbe
-	v.frame.w = 1
+	v.frame.Y = ybe
+	v.frame.X = xbe
+	v.frame.W = 1
 
 	n := len(rects)
 	v.Init(n)
 
 	for i := 0; i < n; i++ {
 		r := &rects[i]
-		if r.w > (1 - v.delta) {
+		if r.W > (1 - v.delta) {
 			PackToBin(&v.frame, r)
 			continue
 		}
@@ -104,7 +104,7 @@ func (v *Kp1Algo) Pack(rects []Rect, xbe, ybe float64, m int) float64 {
 		// one.
 		v.PackToNewShelfInFrame(r, &v.frame, j)
 	}
-	return v.frame.y + v.frame.top
+	return v.frame.Y + v.frame.top
 }
 
 // Returns true/false whether rectangle was packed into top-of-the-heap bin.
@@ -114,7 +114,7 @@ func (v *Kp1Algo) PackToTopBin(r *Rect, j int) bool {
 	}
 	he := heap.Pop(v.bins[j]).(*HeapElem)
 	defer heap.Push(v.bins[j], he)
-	if he.VacantSpace() >= r.h {
+	if he.VacantSpace() >= r.H {
 		PackToBin(he.p, r)
 		return true
 	}
@@ -124,14 +124,14 @@ func (v *Kp1Algo) PackToTopBin(r *Rect, j int) bool {
 func (v *Kp1Algo) RectType(r *Rect) int {
 	j := int(0)
 	for y := 1; y <= v.d; y++ {
-		if r.w <= (v.delta * float64(y)) {
+		if r.W <= (v.delta * float64(y)) {
 			j = y
 			break
 		}
 	}
 	if 0 == j {
 		for y := v.d; y >= 1; y-- {
-			if r.w <= (1 - v.delta*float64(y)) {
+			if r.W <= (1 - v.delta*float64(y)) {
 				j = v.d*2 - y + 1
 				break
 			}
@@ -145,14 +145,14 @@ func (v *Kp1Algo) PackToNewShelfInFrame(r *Rect, f *Bin, j int) {
 	PackToBin(f, &b1.Rect)
 	PackToBin(b1, r)
 	b2 := v.AddBin(v.ComplType(j))
-	b2.y = b1.y
-	b2.x = b1.x + b1.w
+	b2.Y = b1.Y
+	b2.X = b1.X + b1.W
 }
 
 func (v *Kp1Algo) AddBin(t int) *Bin {
 	b := new(Bin)
-	b.h = v.u
-	b.w = v.WidthType(t)
+	b.H = v.u
+	b.W = v.WidthType(t)
 	b.top = 0
 	b.t = t
 	heap.Push(v.bins[t], &HeapElem{b})
@@ -160,9 +160,9 @@ func (v *Kp1Algo) AddBin(t int) *Bin {
 }
 
 func PackToBin(bin *Bin, r *Rect) {
-	r.x = bin.x
-	r.y = bin.y + bin.top
-	bin.top += r.h
+	r.X = bin.X
+	r.Y = bin.Y + bin.top
+	bin.top += r.H
 }
 
 func (v *Kp1Algo) ComplType(t int) int {

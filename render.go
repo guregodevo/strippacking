@@ -18,11 +18,11 @@ const MAX_Y = 900
 const MAX_X = 1212
 
 func (r *Rect) Draw(filled bool) {
-	if 0 == conv_h(r.h) {
-		draw.DrawRectangle(gc, filled, conv_x(r.x), conv_y(r.y+r.h), conv_w(r.w), 1)
+	if 0 == conv_h(r.H) {
+		draw.DrawRectangle(gc, filled, conv_x(r.X), conv_y(r.Y+r.H), conv_w(r.W), 1)
 		return
 	}
-	draw.DrawRectangle(gc, filled, conv_x(r.x), conv_y(r.y+r.h), conv_w(r.w), conv_h(r.h))
+	draw.DrawRectangle(gc, filled, conv_x(r.X), conv_y(r.Y+r.H), conv_w(r.W), conv_h(r.H))
 }
 
 func conv_y(y float64) int {
@@ -89,8 +89,8 @@ func render_all(rects []Rect, m int) {
 	gtk.Main()
 }
 
-var pnonsolid *bool
-var prenderbins *bool
+var Pnonsolid *bool
+var Prenderbins *bool
 var bins_to_render []*Rect = nil
 
 func draw_all(rects []Rect, m int) {
@@ -103,15 +103,15 @@ func draw_all(rects []Rect, m int) {
 		global.Draw(false)
 	}
 	for _, r := range rects {
-		r.w *= strip_width
-		r.x *= strip_width
-		r.Draw(!*pnonsolid)
+		r.W *= strip_width
+		r.X *= strip_width
+		r.Draw(!*Pnonsolid)
 	}
-	if *prenderbins {
+	if *Prenderbins {
 		gc.SetRgbFgColor(gdk.NewColor("red"))
 		for _, r := range bins_to_render {
-			r.w *= strip_width
-			r.x *= strip_width
+			r.W *= strip_width
+			r.X *= strip_width
 			r.Draw(false)
 		}
 		gc.SetRgbFgColor(gdk.NewColor("black"))

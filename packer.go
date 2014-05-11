@@ -7,17 +7,17 @@ import (
 )
 
 type Rect struct {
-	x, y float64
-	h, w float64
+	X, Y float64
+	H, W float64
 }
 
 func GenerateRectangles(n int) []Rect {
 	res := make([]Rect, n)
 	for y := 0; y < n; y++ {
-		res[y].h = rand.Float64()
-		res[y].w = rand.Float64()
-		res[y].x = rand.Float64()
-		res[y].y = rand.Float64()
+		res[y].H = rand.Float64()
+		res[y].W = rand.Float64()
+		res[y].X = rand.Float64()
+		res[y].Y = rand.Float64()
 	}
 	return res
 }
@@ -25,7 +25,7 @@ func GenerateRectangles(n int) []Rect {
 func TotalArea(rects []Rect) float64 {
 	var res float64 = 0
 	for _, r := range rects {
-		res += r.w * r.h
+		res += r.W * r.H
 	}
 	return res
 }
