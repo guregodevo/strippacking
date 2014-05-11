@@ -1,4 +1,4 @@
-package packing
+package strippacking
 
 import (
 	"math/rand"
@@ -35,7 +35,7 @@ type Algorithm interface {
 }
 
 // Returns uncovered area divided by N^(2/3).
-func run(n int, render, validate bool, algo_name string, m int) (coefficient float64) {
+func Run(n int, render, validate bool, algo_name string, m int) (coefficient float64) {
 	rects := GenerateRectangles(n)
 	var algo Algorithm
 

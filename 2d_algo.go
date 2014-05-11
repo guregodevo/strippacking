@@ -1,4 +1,4 @@
-package packing
+package strippacking
 
 import (
 	"math/cmplx"

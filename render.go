@@ -1,4 +1,4 @@
-package packing
+package strippacking
 
 import (
 	"github.com/mattn/go-gtk/gdk"

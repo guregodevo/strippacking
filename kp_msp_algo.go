@@ -1,4 +1,4 @@
-package packing
+package strippacking
 
 type Kp2MspAlgo struct {
 }
